@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>車輛預約系統</title>
+</head>
+<body>
+  <h1>車輛預約系統</h1>
+
+  <h2>預約車輛</h2>
+  <form id="reservation-form">
+    <label for="car">車輛:</label>
+    <select id="car" name="car">
+      <option value="car1">車輛 1</option>
+      <option value="car2">車輛 2</option>
+      <option value="car3">車輛 3</option>
+    </select>
+    <br>
+    <label for="borrower">借車人:</label>
+    <input type="text" id="borrower" name="borrower">
+    <br>
+    <label for="time">預約時間:</label>
+    <input type="datetime-local" id="time" name="time">
+    <br>
+    <button type="submit">預約</button>
+  </form>
+
+  <h2>車輛狀態</h2>
+  <div id="car-status"></div>
+
+  <h2>歸還車輛</h2>
+  <form id="return-form">
+    <label for="return-car">車輛:</label>
+    <select id="return-car" name="return-car">
+      <option value="car1">車輛 1</option>
+      <option value="car2">車輛 2</option>
+      <option value="car3">車輛 3</option>
+    </select>
+    <br>
+    <button type="submit">歸還</button>
+  </form>
+
+  <script>
+   
+    var carStatus = {
+      'car1': '可借',
+      'car2': '可借',
+      'car3': '已借出'
+    };
+
+    
+    function updateCarStatus() {
+      var carStatusDiv = document.getElementById('car-status');
+      carStatusDiv.innerHTML = '';
+
+      
+      Object.keys(carStatus).forEach(function(car) {
+        var status = carStatus[car];
+        var statusMessage = '車輛 ' + car + ': ' + status;
+        var statusElement = document.createElement('p');
+        statusElement.textContent = statusMessage;
+        carStatusDiv.appendChild(statusElement);
+      });
+    }
+
+    
+    document.getElementById('reservation-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      
+      var selectedCar = document.getElementById('car').value;
+      var borrower = document.getElementById('borrower').value;
+      var reservationTime = document.getElementById('time').value;
+
+      
+      
+      var isCarReserved = checkCarReservation(selectedCar, reservationTime);
+
+      if (isCarReserved) {
+        alert('車輛已被借走了！請選擇其他時間或車輛。');
+      } else {
+        
+        carStatus[selectedCar] = '已借出';
+
+      
+        updateCarStatus();
+
+       
+        alert('預約成功！');
+      }
+    });
+
+    
+    document.getElementById('return-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      
+      var returnCar = document.getElementById('return-car').value;
+
+      
+      carStatus[returnCar] = '可借';
+
+      
+      updateCarStatus();
+
+      
+      alert('車輛已歸還！');
+    });
+
+   
+    function checkCarReservation(car, time) {
+      
+      return false;
+    }
+
+    
+    updateCarStatus();
+  </script>
+</body>
+</html>
